@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -60,5 +62,19 @@ public class ProductController {
         byte[] imageFile = product.getImageData();
 
         return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
+   }
+
+   @PutMapping("/product/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable int id ,@RequestPart Product product,
+                                                @RequestPart MultipartFile imageFile){
+       try {
+           Product product1 = service.updateProduct(id, product, imageFile);
+       } catch (IOException e) {
+           return new ResponseEntity<>("Failed to update", HttpStatus.BAD_GATEWAY);
+       }
+       if (product != null)
+            return new ResponseEntity<>("Updated", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Failed to update", HttpStatus.BAD_GATEWAY);
    }
 }
