@@ -66,16 +66,17 @@ public class ProductController {
 
    @PutMapping("/product/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable int id ,@RequestPart Product product,
-                                                @RequestPart MultipartFile imageFile){
+                                                @RequestPart MultipartFile imageFile) {
+       Product product1 = null;
        try {
-           Product product1 = service.updateProduct(id, product, imageFile);
+           product1 = service.updateProduct(id, product, imageFile);
        } catch (IOException e) {
            return new ResponseEntity<>("Failed to update", HttpStatus.BAD_GATEWAY);
        }
-       if (product != null)
-            return new ResponseEntity<>("Updated", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Failed to update", HttpStatus.BAD_GATEWAY);
+       if (product1 != null)
+           return new ResponseEntity<>("Updated", HttpStatus.OK);
+       else
+           return new ResponseEntity<>("Failed to update", HttpStatus.BAD_GATEWAY);
    }
 
    @DeleteMapping("/product/{id}")
