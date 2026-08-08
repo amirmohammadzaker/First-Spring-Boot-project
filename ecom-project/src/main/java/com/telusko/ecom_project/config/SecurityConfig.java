@@ -33,8 +33,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/register", "/api/login", "/api/products", "/api/product/*/image").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/api/register",
+                                "/api/login",
+                                "/h2-console/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()                        .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
