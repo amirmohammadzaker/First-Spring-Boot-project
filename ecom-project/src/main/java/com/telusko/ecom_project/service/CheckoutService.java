@@ -13,7 +13,6 @@ public class CheckoutService {
 
     private final ProductRepo productRepo;
 
-    @Qualifier("samanGateway")
     private final PaymentGateway paymentGateway;
 
     @Transactional

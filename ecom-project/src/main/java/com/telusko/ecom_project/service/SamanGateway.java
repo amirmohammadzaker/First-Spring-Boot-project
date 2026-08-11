@@ -1,8 +1,10 @@
 package com.telusko.ecom_project.service;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
+@Primary
 public class SamanGateway implements PaymentGateway{
     @Override
     public boolean processPayment(double amount) {
