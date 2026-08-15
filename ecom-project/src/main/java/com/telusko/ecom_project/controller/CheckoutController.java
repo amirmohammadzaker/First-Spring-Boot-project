@@ -4,10 +4,7 @@ import com.telusko.ecom_project.service.CheckoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/checkout")
@@ -27,5 +24,10 @@ public class CheckoutController {
         }catch (RuntimeException e){
             return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
         }
+    }
+    @GetMapping("/test-scope")
+    public ResponseEntity<String> testScope() {
+        String result = checkoutService.checkTaskTrackerScope();
+        return ResponseEntity.ok(result);
     }
 }

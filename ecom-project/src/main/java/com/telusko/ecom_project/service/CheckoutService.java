@@ -12,8 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CheckoutService {
 
     private final ProductRepo productRepo;
-
     private final PaymentGateway paymentGateway;
+    private final TaskTracker taskTracker;
+
+    public String checkTaskTrackerScope() {
+        return "Current TaskTracker ID in CheckoutService: " + taskTracker.getTaskId();
+    }
 
     @Transactional
     public String processOrder(int productId, int quantity) {
