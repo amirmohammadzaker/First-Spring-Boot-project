@@ -3,6 +3,7 @@ package com.telusko.ecom_project.service;
 import com.telusko.ecom_project.model.Product;
 import com.telusko.ecom_project.repo.ProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,11 @@ public class CheckoutService {
 
     private final ProductRepo productRepo;
     private final PaymentGateway paymentGateway;
-    private final TaskTracker taskTracker;
+
+    private final ObjectProvider<TaskTracker> taskTrackerProvider;
 
     public String checkTaskTrackerScope() {
-        return "Current TaskTracker ID in CheckoutService: " + taskTracker.getTaskId();
+        return "New TaskTracker ID: " + taskTrackerProvider.getObject().getTaskId();
     }
 
     @Transactional
