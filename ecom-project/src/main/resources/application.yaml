@@ -9,3 +9,7 @@ spring:
     hibernate:
       ddl-auto: update
     defer-datasource-initialization: true
+    db:
+      connection: "{connectionString: 'http://__', userName: 'user', password: '1234'}"
+      host: 127.0.0.1
+      port: 1200
