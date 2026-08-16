@@ -13,3 +13,5 @@ spring:
       connection: "{connectionString: 'http://__', userName: 'user', password: '1234'}"
       host: 127.0.0.1
       port: 1200
+sms:
+  enabled: true
