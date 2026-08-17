@@ -2,11 +2,13 @@ package com.telusko.ecom_project.service;
 
 import com.telusko.ecom_project.model.Product;
 import com.telusko.ecom_project.repo.CommonProductRepo;
+import com.telusko.ecom_project.repo.ProductRepo;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @Profile("prod")
@@ -50,5 +52,9 @@ public class ProdProductService extends ProductService<Product> {
         }
 
         return repo.save(existingProduct);
+    }
+    @Override
+    public List<Product> searchProducts(String keyword) {
+        return ((ProductRepo) repo).searchProducts(keyword);
     }
 }
