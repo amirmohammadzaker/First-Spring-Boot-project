@@ -19,7 +19,9 @@ public class ProdProductService extends ProductService<Product> {
     }
 
     @Override
-    public Product addProduct(Product product, MultipartFile imageFile) throws IOException {
+    public Product addProduct(String productJson, MultipartFile imageFile) throws IOException {
+        Product product = objectMapper.readValue(productJson, Product.class);
+
         if (imageFile != null && !imageFile.isEmpty()) {
             product.setImageName(imageFile.getOriginalFilename());
             product.setImageType(imageFile.getContentType());
@@ -29,21 +31,22 @@ public class ProdProductService extends ProductService<Product> {
     }
 
     @Override
-    public Product updateProduct(int id, Product product, MultipartFile imageFile) throws IOException {
+    public Product updateProduct(int id, String productJson, MultipartFile imageFile) throws IOException {
+        Product productDto = objectMapper.readValue(productJson, Product.class);
         Product existingProduct = getProductById(id);
 
         if (existingProduct == null) {
             return null;
         }
 
-        existingProduct.setName(product.getName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setBrand(product.getBrand());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setCategory(product.getCategory());
-        existingProduct.setReleaseDate(product.getReleaseDate());
-        existingProduct.setProductAvailable(product.isProductAvailable());
-        existingProduct.setStockQuantity(product.getStockQuantity());
+        existingProduct.setName(productDto.getName());
+        existingProduct.setDescription(productDto.getDescription());
+        existingProduct.setBrand(productDto.getBrand());
+        existingProduct.setPrice(productDto.getPrice());
+        existingProduct.setCategory(productDto.getCategory());
+        existingProduct.setReleaseDate(productDto.getReleaseDate());
+        existingProduct.setProductAvailable(productDto.isProductAvailable());
+        existingProduct.setStockQuantity(productDto.getStockQuantity());
 
         if (imageFile != null && !imageFile.isEmpty()) {
             existingProduct.setImageName(imageFile.getOriginalFilename());
@@ -53,6 +56,7 @@ public class ProdProductService extends ProductService<Product> {
 
         return repo.save(existingProduct);
     }
+
     @Override
     public List<Product> searchProducts(String keyword) {
         return ((ProductRepo) repo).searchProducts(keyword);

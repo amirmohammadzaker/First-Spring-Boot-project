@@ -17,17 +17,29 @@ public class DevProductService extends ProductService<DevProduct> {
     }
 
     @Override
-    public DevProduct updateProduct(int id, DevProduct product, MultipartFile imageFile) throws IOException {
+    public DevProduct addProduct(String productJson, MultipartFile imageFile) throws IOException {
+        DevProduct product = objectMapper.readValue(productJson, DevProduct.class);
+        return repo.save(product);
+    }
+
+    @Override
+    public DevProduct updateProduct(int id, String productJson, MultipartFile imageFile) throws IOException {
+        DevProduct productDto = objectMapper.readValue(productJson, DevProduct.class);
         DevProduct existingProduct = getProductById(id);
 
         if (existingProduct == null) {
             return null;
         }
 
-        existingProduct.setName(product.getName());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setDevNotes(product.getDevNotes());
+        existingProduct.setName(productDto.getName());
+        existingProduct.setPrice(productDto.getPrice());
+        existingProduct.setDevNotes(productDto.getDevNotes());
 
         return repo.save(existingProduct);
+    }
+
+    @Override
+    public java.util.List<DevProduct> searchProducts(String keyword) {
+        return repo.findAll(); // یا متد اختصاصی سرچ Dev
     }
 }

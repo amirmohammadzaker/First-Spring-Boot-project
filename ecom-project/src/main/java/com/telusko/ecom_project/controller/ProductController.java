@@ -36,10 +36,10 @@ public class ProductController<T> {
 
     @PostMapping(value = "/product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addProduct(
-            @RequestPart("product") T product,
+            @RequestPart("product") String productJson,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
         try {
-            T savedProduct = productService.addProduct(product, imageFile);
+            T savedProduct = productService.addProduct(productJson, imageFile);
             return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,10 +49,10 @@ public class ProductController<T> {
     @PutMapping(value = "/product/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProduct(
             @PathVariable int id,
-            @RequestPart("product") T product,
+            @RequestPart("product") String productJson,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
         try {
-            T updatedProduct = productService.updateProduct(id, product, imageFile);
+            T updatedProduct = productService.updateProduct(id, productJson, imageFile);
             if (updatedProduct != null) {
                 return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
             } else {
