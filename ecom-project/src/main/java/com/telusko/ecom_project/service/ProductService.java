@@ -1,67 +1,35 @@
 package com.telusko.ecom_project.service;
 
-import com.telusko.ecom_project.model.Product;
-import com.telusko.ecom_project.repo.ProductRepo;
+import com.telusko.ecom_project.repo.CommonProductRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+
 @RequiredArgsConstructor
-@Service
-public class ProductService {
+public abstract class ProductService<T> {
 
-    private final ProductRepo repo;
+    protected final CommonProductRepo<T> repo;
 
-    public List<Product> getAllProducts() {
-
+    public List<T> getAllProducts() {
         return repo.findAll();
     }
 
-    public Product getProductById(int id) {
+    public T getProductById(int id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Product addProduct(Product product, MultipartFile imageFile) throws IOException {
-        product.setImageName(imageFile.getOriginalFilename());
-        product.setImageType(imageFile.getContentType());
-        product.setImageData(imageFile.getBytes());
+    public T addProduct(T product, MultipartFile imageFile) throws IOException {
         return repo.save(product);
-    }
-
-    public Product updateProduct(int id, Product product, MultipartFile imageFile) throws IOException {
-
-        Product existingProduct = repo.findById(id).orElse(null);
-
-        if (existingProduct == null) {
-            return null;
-        }
-
-        existingProduct.setName(product.getName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setBrand(product.getBrand());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setCategory(product.getCategory());
-        existingProduct.setReleaseDate(product.getReleaseDate());
-        existingProduct.setProductAvailable(product.isProductAvailable());
-        existingProduct.setStockQuantity(product.getStockQuantity());
-
-        if (imageFile != null && !imageFile.isEmpty()) {
-            existingProduct.setImageName(imageFile.getOriginalFilename());
-            existingProduct.setImageType(imageFile.getContentType());
-            existingProduct.setImageData(imageFile.getBytes());
-        }
-
-        return repo.save(existingProduct);
     }
 
     public void deleteProduct(int id) {
         repo.deleteById(id);
     }
 
-    public List<Product> searchProducts(String keyword) {
-        return repo.searchProducts(keyword);
+    public List<T> searchProducts(String keyword) {
+        return List.of();
     }
+    public abstract T updateProduct(int id, T product, MultipartFile imageFile) throws IOException;
 }

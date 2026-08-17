@@ -1,4 +1,4 @@
-INSERT INTO product
+INSERT INTO products
 (name, description, brand, price, category, release_date, product_available, stock_quantity, image_name, image_type, image_data)
 VALUES
 ('iPhone 15', 'Apple iPhone 15 with 128GB storage', 'Apple', 999.99, 'Smartphone', '2023-09-22', true, 25, 'iphone15.jpg', 'image/jpeg', NULL),

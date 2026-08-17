@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:devdb
+    driverClassName: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    db:
+      connection: "{connectionString: 'http://__', userName: 'devdb', password: '1234'}"
+      host: 129.0.0.1
+      port: 2400
+sms:
+  enabled: true
