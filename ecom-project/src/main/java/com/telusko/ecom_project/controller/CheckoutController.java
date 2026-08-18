@@ -16,7 +16,7 @@ public class CheckoutController {
     public ResponseEntity<String> buyProduct(@RequestParam int productId , @RequestParam int quantity){
         try {
             String result = checkoutService.processOrder(productId, quantity);
-            if ("Order placed successfully!".equals(result)) {
+            if (result.startsWith("Order placed successfully!")) {
                 return new ResponseEntity<>(result,HttpStatus.OK);
             } else {
                 return new  ResponseEntity<>(result,HttpStatus.BAD_REQUEST);

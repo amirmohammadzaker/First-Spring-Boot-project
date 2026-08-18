@@ -8,7 +8,7 @@ public class SamsungDiscountStrategy implements DiscountStrategy {
 
     @Override
     public boolean supports(String brand) {
-        return "samsung".equalsIgnoreCase(brand);
+        return "Samsung".equalsIgnoreCase(brand);
     }
 
     @Override

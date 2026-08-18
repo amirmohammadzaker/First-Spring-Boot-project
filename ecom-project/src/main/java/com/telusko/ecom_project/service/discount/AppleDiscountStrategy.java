@@ -8,7 +8,7 @@ public class AppleDiscountStrategy implements DiscountStrategy {
 
     @Override
     public boolean supports(String brand) {
-        return "apple".equalsIgnoreCase(brand);
+        return "Apple".equalsIgnoreCase(brand);
     }
 
     @Override
