@@ -1,9 +1,11 @@
 package com.telusko.ecom_project.service.discount;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
+@Order(1)
 public class AppleDiscountStrategy implements DiscountStrategy {
 
     @Override
