@@ -1,33 +1,52 @@
 package com.telusko.ecom_project.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.model.DevProduct;
 import com.telusko.ecom_project.repo.CommonProductRepo;
+import com.telusko.ecom_project.validation.DevChecks;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Profile("dev")
 public class DevProductService extends ProductService<DevProduct> {
 
-    public DevProductService(CommonProductRepo<DevProduct> repo) {
-        super(repo);
+    private final Validator validator;
+
+    public DevProductService(CommonProductRepo<DevProduct> repo, ObjectMapper objectMapper, Validator validator) {
+        super(repo, objectMapper);
+        this.validator = validator;
+    }
+
+    private void validate(DevProduct product) {
+        Set<ConstraintViolation<DevProduct>> violations = validator.validate(product, DevChecks.class);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 
     @Override
     public DevProduct addProduct(String productJson, MultipartFile imageFile) throws IOException {
         DevProduct product = objectMapper.readValue(productJson, DevProduct.class);
+        validate(product);
         return repo.save(product);
     }
 
     @Override
     public DevProduct updateProduct(int id, String productJson, MultipartFile imageFile) throws IOException {
         DevProduct productDto = objectMapper.readValue(productJson, DevProduct.class);
-        DevProduct existingProduct = getProductById(id);
+        validate(productDto);
 
+        DevProduct existingProduct = getProductById(id);
         if (existingProduct == null) {
             return null;
         }
@@ -40,9 +59,10 @@ public class DevProductService extends ProductService<DevProduct> {
     }
 
     @Override
-    public java.util.List<DevProduct> searchProducts(String keyword) {
-        return repo.findAll(); // یا متد اختصاصی سرچ Dev
+    public List<DevProduct> searchProducts(String keyword) {
+        return repo.findAll();
     }
+
     @Override
     public DevProduct updateProductPrice(int id, BigDecimal newPrice) {
         DevProduct existingProduct = getProductById(id);
