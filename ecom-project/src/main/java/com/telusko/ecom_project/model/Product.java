@@ -1,6 +1,7 @@
 package com.telusko.ecom_project.model;
 
 import com.telusko.ecom_project.validation.ProdChecks;
+import com.telusko.ecom_project.validation.ValidReleaseDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,8 @@ public class Product {
     @NotBlank(message = "Category cannot be blank", groups = ProdChecks.class)
     private String category;
 
+    @NotNull(message = "تاریخ انتشار الزامی است")
+    @ValidReleaseDate
     private Date releaseDate;
 
     private boolean productAvailable;
