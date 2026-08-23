@@ -1,5 +1,6 @@
 package com.telusko.ecom_project.model;
 
+import com.telusko.ecom_project.validation.ProdChecks;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -20,34 +21,33 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
-    @NotBlank(message = "Product name cannot be blank")
+    @NotBlank(message = "Product name cannot be blank", groups = ProdChecks.class)
     private String name;
 
     private String description;
 
-    @NotNull
-    @NotBlank(message = "Brand cannot be blank")
+    @NotBlank(message = "Brand cannot be blank", groups = ProdChecks.class)
     private String brand;
 
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
-    @DecimalMax(value = "100000.0", message = "Price cannot exceed 100,000")
+    @NotNull(message = "Price is required", groups = ProdChecks.class)
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero", groups = ProdChecks.class)
+    @DecimalMax(value = "100000.0", message = "Price cannot exceed 100,000", groups = ProdChecks.class)
     private BigDecimal price;
 
-    @NotNull
-    @NotBlank(message = "Category cannot be blank")
+    @NotBlank(message = "Category cannot be blank", groups = ProdChecks.class)
     private String category;
 
     private Date releaseDate;
 
     private boolean productAvailable;
 
+    @Min(value = 0, message = "Stock quantity cannot be negative", groups = ProdChecks.class)
     private int stockQuantity;
 
     private String imageName;
 
     private String imageType;
+
     @Lob
     private byte[] imageData;
 }
