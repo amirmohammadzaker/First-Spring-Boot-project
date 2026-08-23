@@ -1,8 +1,13 @@
 package com.telusko.ecom_project.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.model.Product;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import com.telusko.ecom_project.repo.ProductRepo;
+import com.telusko.ecom_project.validation.ProdChecks;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,18 +15,31 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Profile("prod")
 public class ProdProductService extends ProductService<Product> {
 
-    public ProdProductService(CommonProductRepo<Product> repo) {
-        super(repo);
+    private final Validator validator;
+
+    public ProdProductService(CommonProductRepo<Product> repo, ObjectMapper objectMapper, Validator validator) {
+        super(repo, objectMapper);
+        this.validator = validator;
+    }
+
+    private void validate(Product product) {
+        Set<ConstraintViolation<Product>> violations = validator.validate(product, ProdChecks.class);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 
     @Override
     public Product addProduct(String productJson, MultipartFile imageFile) throws IOException {
         Product product = objectMapper.readValue(productJson, Product.class);
+
+        validate(product);
 
         if (imageFile != null && !imageFile.isEmpty()) {
             product.setImageName(imageFile.getOriginalFilename());
@@ -34,8 +52,10 @@ public class ProdProductService extends ProductService<Product> {
     @Override
     public Product updateProduct(int id, String productJson, MultipartFile imageFile) throws IOException {
         Product productDto = objectMapper.readValue(productJson, Product.class);
-        Product existingProduct = getProductById(id);
 
+        validate(productDto);
+
+        Product existingProduct = getProductById(id);
         if (existingProduct == null) {
             return null;
         }
@@ -62,6 +82,7 @@ public class ProdProductService extends ProductService<Product> {
     public List<Product> searchProducts(String keyword) {
         return ((ProductRepo) repo).searchProducts(keyword);
     }
+
     @Override
     public Product updateProductPrice(int id, BigDecimal newPrice) {
         Product existingProduct = getProductById(id);
