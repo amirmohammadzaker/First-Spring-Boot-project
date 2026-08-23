@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -60,5 +61,14 @@ public class ProdProductService extends ProductService<Product> {
     @Override
     public List<Product> searchProducts(String keyword) {
         return ((ProductRepo) repo).searchProducts(keyword);
+    }
+    @Override
+    public Product updateProductPrice(int id, BigDecimal newPrice) {
+        Product existingProduct = getProductById(id);
+        if (existingProduct == null) {
+            return null;
+        }
+        existingProduct.setPrice(newPrice);
+        return repo.save(existingProduct);
     }
 }

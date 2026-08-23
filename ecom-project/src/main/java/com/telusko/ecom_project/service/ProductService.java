@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 public abstract class ProductService<T> {
@@ -36,4 +37,5 @@ public abstract class ProductService<T> {
     public abstract T updateProduct(int id, String productJson, MultipartFile imageFile) throws IOException;
 
     public abstract List<T> searchProducts(String keyword);
+    public abstract T updateProductPrice(int id, BigDecimal newPrice);
 }

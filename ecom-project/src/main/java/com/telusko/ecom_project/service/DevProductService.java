@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @Service
 @Profile("dev")
@@ -41,5 +42,14 @@ public class DevProductService extends ProductService<DevProduct> {
     @Override
     public java.util.List<DevProduct> searchProducts(String keyword) {
         return repo.findAll(); // یا متد اختصاصی سرچ Dev
+    }
+    @Override
+    public DevProduct updateProductPrice(int id, BigDecimal newPrice) {
+        DevProduct existingProduct = getProductById(id);
+        if (existingProduct == null) {
+            return null;
+        }
+        existingProduct.setPrice(newPrice);
+        return repo.save(existingProduct);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -78,5 +79,17 @@ public class ProductController<T> {
     public ResponseEntity<List<T>> searchProducts(@RequestParam String keyword) {
         List<T> products = productService.searchProducts(keyword);
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @PatchMapping("/product/{id}/price")
+    public ResponseEntity<?> updateProductPrice(
+            @PathVariable int id,
+            @RequestParam BigDecimal price) {
+
+        T updatedProduct = productService.updateProductPrice(id, price);
+        if (updatedProduct != null) {
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
     }
 }
