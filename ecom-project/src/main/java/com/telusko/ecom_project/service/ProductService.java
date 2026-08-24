@@ -1,6 +1,7 @@
 package com.telusko.ecom_project.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.telusko.ecom_project.exception.ProductNotFoundException;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,8 @@ public abstract class ProductService<T> {
     }
 
     public T getProductById(int id) {
-        return repo.findById(id).orElse(null);
+        return repo.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("محصولی با شناسه مورد نظر یافت نشد"));
     }
 
     public abstract T addProduct(String productJson, MultipartFile imageFile) throws IOException;
