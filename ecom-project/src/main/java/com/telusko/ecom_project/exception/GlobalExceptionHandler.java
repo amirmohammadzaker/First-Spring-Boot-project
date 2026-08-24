@@ -43,6 +43,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleGlobalException(Exception ex) {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
     }
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> handleMaxUploadSizeExceeded(org.springframework.web.multipart.MaxUploadSizeExceededException ex) {
+        return buildErrorResponse(HttpStatus.PAYLOAD_TOO_LARGE, "حجم فایل ارسالی بیشتر از حد مجاز است", null);
+    }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String message, Object details) {
         Map<String, Object> response = new HashMap<>();
