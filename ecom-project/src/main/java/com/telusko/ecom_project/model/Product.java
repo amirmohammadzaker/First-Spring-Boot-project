@@ -1,5 +1,6 @@
 package com.telusko.ecom_project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telusko.ecom_project.validation.ProdChecks;
 import com.telusko.ecom_project.validation.ValidReleaseDate;
@@ -42,6 +43,7 @@ public class Product {
     @NotNull(message = "تاریخ انتشار الزامی است")
     @ValidReleaseDate
     @JsonProperty("release_Date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date releaseDate;
 
     private boolean productAvailable;
