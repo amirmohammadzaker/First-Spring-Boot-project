@@ -8,6 +8,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,5 +72,9 @@ public class DevProductService extends ProductService<DevProduct> {
         }
         existingProduct.setPrice(newPrice);
         return repo.save(existingProduct);
+    }
+    @Override
+    public ResponseEntity<byte[]> downloadImage(int id) {
+        throw new UnsupportedOperationException("دانلود تصویر در محیط Dev پشتیبانی نمی‌شود");
     }
 }

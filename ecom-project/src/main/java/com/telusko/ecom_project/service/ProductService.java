@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.exception.ProductNotFoundException;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,4 +37,5 @@ public abstract class ProductService<T> {
     public abstract List<T> searchProducts(String keyword);
 
     public abstract T updateProductPrice(int id, BigDecimal newPrice);
+    public abstract ResponseEntity<byte[]> downloadImage(int id);
 }

@@ -1,6 +1,7 @@
 package com.telusko.ecom_project.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.telusko.ecom_project.exception.ProductNotFoundException;
 import com.telusko.ecom_project.model.Product;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import com.telusko.ecom_project.repo.ProductRepo;
@@ -9,6 +10,9 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,5 +95,21 @@ public class ProdProductService extends ProductService<Product> {
         }
         existingProduct.setPrice(newPrice);
         return repo.save(existingProduct);
+    }
+    @Override
+    public ResponseEntity<byte[]> downloadImage(int id) {
+        Product product = getProductById(id);
+
+        if (product.getImageData() == null || product.getImageData().length == 0) {
+            throw new ProductNotFoundException("تصویری برای این محصول یافت نشد");
+        }
+
+        String fileName = product.getImageName() != null ? product.getImageName() : "file";
+        String fileType = product.getImageType() != null ? product.getImageType() : "application/octet-stream";
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(fileType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(product.getImageData());
     }
 }

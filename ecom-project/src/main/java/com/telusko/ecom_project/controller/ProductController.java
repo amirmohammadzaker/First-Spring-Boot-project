@@ -92,4 +92,8 @@ public class ProductController<T> {
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/product/{id}/image/download")
+    public ResponseEntity<byte[]> downloadProductImage(@PathVariable int id) {
+        return productService.downloadImage(id);
+    }
 }
