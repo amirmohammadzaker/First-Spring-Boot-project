@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/checkout")
@@ -25,6 +26,12 @@ public class CheckoutController {
             return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/old-path")
+    public RedirectView redirectToBuy() {
+        return new RedirectView("/api/checkout/test-scope");
+    }
+
     @GetMapping("/test-scope")
     public ResponseEntity<String> testScope() {
         String result = checkoutService.checkTaskTrackerScope();
