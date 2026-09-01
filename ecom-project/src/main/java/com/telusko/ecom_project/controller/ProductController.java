@@ -125,4 +125,9 @@ public class ProductController<T> {
         T updatedProduct = productService.removeTagFromProduct(productId, tagId);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
+    @GetMapping("/products/by-tag/{tagId}")
+    public ResponseEntity<List<T>> getProductsByTagId(@PathVariable Long tagId) {
+        List<T> products = productService.getProductsByTagId(tagId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 }

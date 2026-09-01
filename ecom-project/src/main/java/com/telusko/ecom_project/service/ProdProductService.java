@@ -160,4 +160,7 @@ public class ProdProductService extends ProductService<Product> {
         product.getTags().remove(tag);
         return repo.save(product);
     }
+    public List<Product> getProductsByTagId(Long tagId) {
+        return ((ProductRepo) repo).findByTagsId(tagId);
+    }
 }

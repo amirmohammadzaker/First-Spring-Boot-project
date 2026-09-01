@@ -94,4 +94,8 @@ public class DevProductService extends ProductService<DevProduct> {
     public DevProduct removeTagFromProduct(int productId, Long tagId) {
         throw new UnsupportedOperationException("مدیریت تگ‌ها در محیط Dev پشتیبانی نمی‌شود");
     }
+    @Override
+    public List<DevProduct> getProductsByTagId(Long tagId) {
+        throw new UnsupportedOperationException("مدیریت تگ‌ها در محیط Dev پشتیبانی نمی‌شود");
+    }
 }

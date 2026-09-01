@@ -16,4 +16,5 @@ public interface ProductRepo extends CommonProductRepo<Product> {
             "LOWER(p.brand) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.category) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Product> searchProducts(String keyword);
+    List<Product> findByTagsId(Long tagId);
 }
