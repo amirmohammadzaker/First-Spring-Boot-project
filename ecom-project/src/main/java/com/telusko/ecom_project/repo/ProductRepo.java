@@ -3,8 +3,10 @@ package com.telusko.ecom_project.repo;
 import com.telusko.ecom_project.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -17,4 +19,6 @@ public interface ProductRepo extends CommonProductRepo<Product> {
             "LOWER(p.category) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Product> searchProducts(String keyword);
     List<Product> findByTagsId(Long tagId);
+    @Query(value = "SELECT * FROM products p WHERE p.price >= :minPrice AND p.product_available = true", nativeQuery = true)
+    List<Product> findAvailableProductsCheaperThan(@Param("minPrice") BigDecimal minPrice);
 }
