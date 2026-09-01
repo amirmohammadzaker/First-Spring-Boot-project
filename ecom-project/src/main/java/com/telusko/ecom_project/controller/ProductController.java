@@ -1,5 +1,6 @@
 package com.telusko.ecom_project.controller;
 
+import com.telusko.ecom_project.model.Review;
 import com.telusko.ecom_project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -80,6 +81,7 @@ public class ProductController<T> {
         List<T> products = productService.searchProducts(keyword);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
     @PatchMapping("/product/{id}/price")
     public ResponseEntity<?> updateProductPrice(
             @PathVariable int id,
@@ -92,8 +94,20 @@ public class ProductController<T> {
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/product/{id}/image/download")
     public ResponseEntity<byte[]> downloadProductImage(@PathVariable int id) {
         return productService.downloadImage(id);
+    }
+
+    // ==========================================
+    // اندپوینت جدید جهت ثبت نظر برای یک محصول
+    // ==========================================
+    @PostMapping("/product/{id}/reviews")
+    public ResponseEntity<Review> addReviewToProduct(
+            @PathVariable int id,
+            @RequestBody Review review) {
+        Review savedReview = productService.addReviewToProduct(id, review);
+        return new ResponseEntity<>(savedReview, HttpStatus.CREATED);
     }
 }

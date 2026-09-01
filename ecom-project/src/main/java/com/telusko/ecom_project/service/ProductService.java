@@ -2,6 +2,7 @@ package com.telusko.ecom_project.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.exception.ProductNotFoundException;
+import com.telusko.ecom_project.model.Review;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,4 +39,5 @@ public abstract class ProductService<T> {
 
     public abstract T updateProductPrice(int id, BigDecimal newPrice);
     public abstract ResponseEntity<byte[]> downloadImage(int id);
+    public abstract Review addReviewToProduct(int productId, Review review);
 }

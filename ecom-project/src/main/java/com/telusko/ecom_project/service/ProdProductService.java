@@ -3,8 +3,10 @@ package com.telusko.ecom_project.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.exception.ProductNotFoundException;
 import com.telusko.ecom_project.model.Product;
+import com.telusko.ecom_project.model.Review;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import com.telusko.ecom_project.repo.ProductRepo;
+import com.telusko.ecom_project.repo.ReviewRepo;
 import com.telusko.ecom_project.validation.ProdChecks;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -26,10 +28,15 @@ import java.util.Set;
 public class ProdProductService extends ProductService<Product> {
 
     private final Validator validator;
+    private final ReviewRepo reviewRepo;
 
-    public ProdProductService(CommonProductRepo<Product> repo, ObjectMapper objectMapper, Validator validator) {
+    public ProdProductService(CommonProductRepo<Product> repo,
+                              ObjectMapper objectMapper,
+                              Validator validator,
+                              ReviewRepo reviewRepo) {
         super(repo, objectMapper);
         this.validator = validator;
+        this.reviewRepo = reviewRepo;
     }
 
     private void validate(Product product) {
@@ -37,6 +44,19 @@ public class ProdProductService extends ProductService<Product> {
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+    }
+
+
+    @Override
+    public Review addReviewToProduct(int productId, Review review) {
+        Product product = getProductById(productId);
+        if (product == null) {
+            throw new ProductNotFoundException("محصولی با شناسه " + productId + " یافت نشد.");
+        }
+
+        review.setProduct(product);
+
+        return reviewRepo.save(review);
     }
 
     @Override
@@ -96,6 +116,7 @@ public class ProdProductService extends ProductService<Product> {
         existingProduct.setPrice(newPrice);
         return repo.save(existingProduct);
     }
+
     @Override
     public ResponseEntity<byte[]> downloadImage(int id) {
         Product product = getProductById(id);

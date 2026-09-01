@@ -2,6 +2,7 @@ package com.telusko.ecom_project.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.model.DevProduct;
+import com.telusko.ecom_project.model.Review;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import com.telusko.ecom_project.validation.DevChecks;
 import jakarta.validation.ConstraintViolation;
@@ -33,6 +34,11 @@ public class DevProductService extends ProductService<DevProduct> {
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+    }
+
+    @Override
+    public Review addReviewToProduct(int productId, Review review) {
+        throw new UnsupportedOperationException("ثبت نظر برای محصول در محیط Dev پشتیبانی نمی‌شود");
     }
 
     @Override
@@ -73,6 +79,7 @@ public class DevProductService extends ProductService<DevProduct> {
         existingProduct.setPrice(newPrice);
         return repo.save(existingProduct);
     }
+
     @Override
     public ResponseEntity<byte[]> downloadImage(int id) {
         throw new UnsupportedOperationException("دانلود تصویر در محیط Dev پشتیبانی نمی‌شود");
