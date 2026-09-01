@@ -14,3 +14,45 @@ VALUES
 ('رضا احمدی', 'صفحه نمایش ۲۴۰ هرتزی گلکسی S24 بی نظیره.', 5, 2),
 ('مریم کاظمی', 'طراحی مک بوک ایر M3 بسیار باریک و سبک است ولی قیمتش بالاست.', 4, 3),
 ('حسین نوری', 'نویز کنسلینگ هدفون سونی واقعاً حیرت‌انگیزه.', 5, 4);
+
+-- ==========================================
+-- درج تگ‌های اولیه سیستم
+-- ==========================================
+INSERT INTO tags (name)
+VALUES
+('ELECTRONICS'),
+('MOBILE'),
+('LAPTOP'),
+('AUDIO'),
+('APPLE'),
+('SAMSUNG'),
+('SONY');
+
+-- ==========================================
+-- اتصال تگ‌ها به محصولات در جدول واسط (product_tags)
+-- ==========================================
+INSERT INTO product_tags (product_id, tag_id)
+VALUES
+-- iPhone 15 (Product 1) -> ELECTRONICS(1), MOBILE(2), APPLE(5)
+(1, 1),
+(1, 2),
+(1, 5),
+
+-- Galaxy S24 (Product 2) -> ELECTRONICS(1), MOBILE(2), SAMSUNG(6)
+(2, 1),
+(2, 2),
+(2, 6),
+
+-- MacBook Air M3 (Product 3) -> ELECTRONICS(1), LAPTOP(3), APPLE(5)
+(3, 1),
+(3, 3),
+(3, 5),
+
+-- Sony WH-1000XM5 (Product 4) -> ELECTRONICS(1), AUDIO(4), SONY(7)
+(4, 1),
+(4, 4),
+(4, 7),
+
+-- Dell XPS 15 (Product 5) -> ELECTRONICS(1), LAPTOP(3)
+(5, 1),
+(5, 3);

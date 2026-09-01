@@ -100,14 +100,29 @@ public class ProductController<T> {
         return productService.downloadImage(id);
     }
 
-    // ==========================================
-    // اندپوینت جدید جهت ثبت نظر برای یک محصول
-    // ==========================================
+
     @PostMapping("/product/{id}/reviews")
     public ResponseEntity<Review> addReviewToProduct(
             @PathVariable int id,
             @RequestBody Review review) {
         Review savedReview = productService.addReviewToProduct(id, review);
         return new ResponseEntity<>(savedReview, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/product/{productId}/tags/{tagId}")
+    public ResponseEntity<T> addTagToProduct(
+            @PathVariable int productId,
+            @PathVariable Long tagId) {
+        T updatedProduct = productService.addTagToProduct(productId, tagId);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/product/{productId}/tags/{tagId}")
+    public ResponseEntity<T> removeTagFromProduct(
+            @PathVariable int productId,
+            @PathVariable Long tagId) {
+        T updatedProduct = productService.removeTagFromProduct(productId, tagId);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 }

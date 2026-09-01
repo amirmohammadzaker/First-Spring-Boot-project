@@ -84,4 +84,14 @@ public class DevProductService extends ProductService<DevProduct> {
     public ResponseEntity<byte[]> downloadImage(int id) {
         throw new UnsupportedOperationException("دانلود تصویر در محیط Dev پشتیبانی نمی‌شود");
     }
+
+    @Override
+    public DevProduct addTagToProduct(int productId, Long tagId) {
+        throw new UnsupportedOperationException("مدیریت تگ‌ها در محیط Dev پشتیبانی نمی‌شود");
+    }
+
+    @Override
+    public DevProduct removeTagFromProduct(int productId, Long tagId) {
+        throw new UnsupportedOperationException("مدیریت تگ‌ها در محیط Dev پشتیبانی نمی‌شود");
+    }
 }

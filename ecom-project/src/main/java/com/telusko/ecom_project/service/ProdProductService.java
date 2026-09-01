@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.ecom_project.exception.ProductNotFoundException;
 import com.telusko.ecom_project.model.Product;
 import com.telusko.ecom_project.model.Review;
+import com.telusko.ecom_project.model.Tag;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import com.telusko.ecom_project.repo.ProductRepo;
 import com.telusko.ecom_project.repo.ReviewRepo;
+import com.telusko.ecom_project.repo.TagRepository;
 import com.telusko.ecom_project.validation.ProdChecks;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,14 +32,17 @@ public class ProdProductService extends ProductService<Product> {
 
     private final Validator validator;
     private final ReviewRepo reviewRepo;
+    private final TagRepository tagRepository;
 
     public ProdProductService(CommonProductRepo<Product> repo,
                               ObjectMapper objectMapper,
                               Validator validator,
-                              ReviewRepo reviewRepo) {
+                              ReviewRepo reviewRepo,
+                              TagRepository tagRepository) {
         super(repo, objectMapper);
         this.validator = validator;
         this.reviewRepo = reviewRepo;
+        this.tagRepository = tagRepository;
     }
 
     private void validate(Product product) {
@@ -45,7 +51,6 @@ public class ProdProductService extends ProductService<Product> {
             throw new ConstraintViolationException(violations);
         }
     }
-
 
     @Override
     public Review addReviewToProduct(int productId, Review review) {
@@ -132,5 +137,27 @@ public class ProdProductService extends ProductService<Product> {
                 .contentType(MediaType.parseMediaType(fileType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(product.getImageData());
+    }
+
+    @Override
+    @Transactional
+    public Product addTagToProduct(int productId, Long tagId) {
+        Product product = getProductById(productId);
+        Tag tag = tagRepository.findById(tagId)
+                .orElseThrow(() -> new RuntimeException("تگی با شناسه " + tagId + " یافت نشد"));
+
+        product.getTags().add(tag);
+        return repo.save(product);
+    }
+
+    @Override
+    @Transactional
+    public Product removeTagFromProduct(int productId, Long tagId) {
+        Product product = getProductById(productId);
+        Tag tag = tagRepository.findById(tagId)
+                .orElseThrow(() -> new RuntimeException("تگی با شناسه " + tagId + " یافت نشد"));
+
+        product.getTags().remove(tag);
+        return repo.save(product);
     }
 }

@@ -40,4 +40,6 @@ public abstract class ProductService<T> {
     public abstract T updateProductPrice(int id, BigDecimal newPrice);
     public abstract ResponseEntity<byte[]> downloadImage(int id);
     public abstract Review addReviewToProduct(int productId, Review review);
+    public abstract T addTagToProduct(int productId, Long tagId);
+    public abstract T removeTagFromProduct(int productId, Long tagId);
 }
