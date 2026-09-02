@@ -31,7 +31,7 @@ public class ProductController<T> {
     }
 
     @GetMapping("/products/paged")
-    public ResponseEntity<Page<T>> getProductsPaged(
+    public ResponseEntity<List<T>> getProductsPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -41,7 +41,7 @@ public class ProductController<T> {
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
-        return new ResponseEntity<>(productService.getProductsPaged(PageRequest.of(page, size, sort)), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getProductsPaged(PageRequest.of(page, size, sort)).getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/products/by-release-date")
