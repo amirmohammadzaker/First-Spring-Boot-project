@@ -3,6 +3,10 @@ package com.telusko.ecom_project.controller;
 import com.telusko.ecom_project.model.Review;
 import com.telusko.ecom_project.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,21 @@ public class ProductController<T> {
     @GetMapping("/products")
     public ResponseEntity<List<T>> getAllProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/paged")
+    public ResponseEntity<Page<T>> getProductsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+
+        return new ResponseEntity<>(productService.getProductsPaged(PageRequest.of(page, size, sort)),HttpStatus.OK);
     }
 
     @GetMapping("/product/{id}")
@@ -100,7 +119,6 @@ public class ProductController<T> {
         return productService.downloadImage(id);
     }
 
-
     @PostMapping("/product/{id}/reviews")
     public ResponseEntity<Review> addReviewToProduct(
             @PathVariable int id,
@@ -108,7 +126,6 @@ public class ProductController<T> {
         Review savedReview = productService.addReviewToProduct(id, review);
         return new ResponseEntity<>(savedReview, HttpStatus.CREATED);
     }
-
 
     @PostMapping("/product/{productId}/tags/{tagId}")
     public ResponseEntity<T> addTagToProduct(
@@ -125,6 +142,7 @@ public class ProductController<T> {
         T updatedProduct = productService.removeTagFromProduct(productId, tagId);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
+
     @GetMapping("/products/by-tag/{tagId}")
     public ResponseEntity<List<T>> getProductsByTagId(@PathVariable Long tagId) {
         List<T> products = productService.getProductsByTagId(tagId);

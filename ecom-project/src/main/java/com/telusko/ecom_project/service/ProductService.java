@@ -5,6 +5,8 @@ import com.telusko.ecom_project.exception.ProductNotFoundException;
 import com.telusko.ecom_project.model.Review;
 import com.telusko.ecom_project.repo.CommonProductRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,9 @@ public abstract class ProductService<T> {
 
     public List<T> getAllProducts() {
         return repo.findAll();
+    }
+    public Page<T> getProductsPaged(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 
     public T getProductById(int id) {
