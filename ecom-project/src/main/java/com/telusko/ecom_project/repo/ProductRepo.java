@@ -21,4 +21,5 @@ public interface ProductRepo extends CommonProductRepo<Product> {
     List<Product> findByTagsId(Long tagId);
     @Query(value = "SELECT * FROM products p WHERE p.price >= :minPrice AND p.product_available = true", nativeQuery = true)
     List<Product> findAvailableProductsCheaperThan(@Param("minPrice") BigDecimal minPrice);
+    List<Product> findAllByOrderByReleaseDateDesc();
 }

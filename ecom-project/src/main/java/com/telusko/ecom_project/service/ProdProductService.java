@@ -163,4 +163,8 @@ public class ProdProductService extends ProductService<Product> {
     public List<Product> getProductsByTagId(Long tagId) {
         return ((ProductRepo) repo).findByTagsId(tagId);
     }
+    @Override
+    public List<Product> getProductsSortedByReleaseDate() {
+        return ((ProductRepo) repo).findAllByOrderByReleaseDateDesc();
+    }
 }

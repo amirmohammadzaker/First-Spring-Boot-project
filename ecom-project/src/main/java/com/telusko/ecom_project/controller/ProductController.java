@@ -41,8 +41,13 @@ public class ProductController<T> {
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
+        return new ResponseEntity<>(productService.getProductsPaged(PageRequest.of(page, size, sort)), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(productService.getProductsPaged(PageRequest.of(page, size, sort)),HttpStatus.OK);
+    @GetMapping("/products/by-release-date")
+    public ResponseEntity<List<T>> getProductsSortedByReleaseDate() {
+        List<T> products = productService.getProductsSortedByReleaseDate();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/product/{id}")

@@ -31,6 +31,7 @@ public abstract class ProductService<T> {
         return repo.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("محصولی با شناسه مورد نظر یافت نشد"));
     }
+    public abstract List<T> getProductsSortedByReleaseDate();
 
     public abstract T addProduct(String productJson, MultipartFile imageFile) throws IOException;
 
