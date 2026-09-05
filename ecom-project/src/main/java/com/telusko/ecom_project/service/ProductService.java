@@ -49,4 +49,5 @@ public abstract class ProductService<T> {
     public abstract T addTagToProduct(int productId, Long tagId);
     public abstract T removeTagFromProduct(int productId, Long tagId);
     public abstract List<T> getProductsByTagId(Long tagId);
+    public abstract List<T> getAllProductsWithReviewsAndTags();
 }

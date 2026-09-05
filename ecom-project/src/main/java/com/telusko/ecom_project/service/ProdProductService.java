@@ -167,4 +167,9 @@ public class ProdProductService extends ProductService<Product> {
     public List<Product> getProductsSortedByReleaseDate() {
         return ((ProductRepo) repo).findAllByOrderByReleaseDateDesc();
     }
+    // در ProdProductService.java
+    @Override
+    public List<Product> getAllProductsWithReviewsAndTags() {
+        return ((ProductRepo) repo).findAllWithReviewsAndTags();
+    }
 }

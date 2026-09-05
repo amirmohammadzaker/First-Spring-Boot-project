@@ -103,4 +103,9 @@ public class DevProductService extends ProductService<DevProduct> {
     public List<DevProduct> getProductsSortedByReleaseDate() {
         throw new UnsupportedOperationException("مرتب‌سازی بر اساس تاریخ انتشار در محیط Dev پشتیبانی نمی‌شود");
     }
+    // در DevProductService.java
+    @Override
+    public List<DevProduct> getAllProductsWithReviewsAndTags() {
+        throw new UnsupportedOperationException("دریافت هم‌زمان نظرات و تگ‌ها در محیط Dev پشتیبانی نمی‌شود");
+    }
 }

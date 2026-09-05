@@ -26,8 +26,8 @@ public class ProductController<T> {
     private final ProductService<T> productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<T>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    public ResponseEntity<List<T>> getAllProductsWithDetails() {
+        return new ResponseEntity<>(productService.getAllProductsWithReviewsAndTags(), HttpStatus.OK);
     }
 
     @GetMapping("/products/paged")
