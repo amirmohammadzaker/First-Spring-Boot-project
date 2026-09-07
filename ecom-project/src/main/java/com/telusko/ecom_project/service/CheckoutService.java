@@ -19,6 +19,7 @@ public class CheckoutService {
     private final ProductRepo productRepo;
     private final PaymentGateway paymentGateway;
     private final ObjectProvider<TaskTracker> taskTrackerProvider;
+    private final AuditLogService auditLogService;
 
     // Automatically injects all available DiscountStrategy beans via Spring
     private final List<DiscountStrategy> discountStrategies;
@@ -58,9 +59,13 @@ public class CheckoutService {
             if (product.getStockQuantity() == 0) {
                 product.setProductAvailable(false);
             }
-
             productRepo.save(product);
-            throw new RuntimeException("خطای ساختگی بعد از بروزرسانی دیتابیس برای تست Rollback!");
+            try {
+                auditLogService.logOrderAttempt("درخواست سفارش برای محصول: " + productId);
+            } catch (RuntimeException e) {
+                System.out.println("تراکنش دوم Rollback شد اما تراکنش اصلی ادامه می‌یابد: " + e.getMessage());
+            }
+            return "Order placed successfully! Total charged after discount: $" + totalAmount;
         } else {
             return "Payment failed!";
         }
