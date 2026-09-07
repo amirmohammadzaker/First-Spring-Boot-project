@@ -7,8 +7,11 @@ import com.telusko.ecom_project.validation.ValidReleaseDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,6 +24,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
     @Id
@@ -42,6 +46,10 @@ public class Product {
 
     @NotBlank(message = "Category cannot be blank", groups = ProdChecks.class)
     private String category;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
     @NotNull(message = "تاریخ انتشار الزامی است")
     @ValidReleaseDate
