@@ -60,7 +60,7 @@ public class CheckoutService {
             }
 
             productRepo.save(product);
-            return "Order placed successfully! Total charged after discount: $" + totalAmount;
+            throw new RuntimeException("خطای ساختگی بعد از بروزرسانی دیتابیس برای تست Rollback!");
         } else {
             return "Payment failed!";
         }

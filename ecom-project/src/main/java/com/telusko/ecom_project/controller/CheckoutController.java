@@ -23,7 +23,7 @@ public class CheckoutController {
                 return new  ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
             }
         }catch (RuntimeException e){
-            return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
