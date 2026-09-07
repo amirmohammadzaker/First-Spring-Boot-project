@@ -5,7 +5,7 @@ VALUES
 ('Galaxy S24', 'Samsung Galaxy S24 256GB', 'Samsung', 899.99, 'Smartphone', '2024-01-17', true, 30, 'galaxys24.jpg', 'image/jpeg', NULL),
 ('MacBook Air M3', '13-inch Apple MacBook Air with M3 chip', 'Apple', 1499.99, 'Laptop', '2024-03-08', true, 15, 'macbookairm3.jpg', 'image/jpeg', NULL),
 ('Sony WH-1000XM5', 'Wireless Noise Cancelling Headphones', 'Sony', 349.99, 'Headphones', '2022-05-12', true, 40, 'sonyxm5.jpg', 'image/jpeg', NULL),
-('Dell XPS 15', '15-inch high performance laptop', 'Dell', 1899.99, 'Laptop', '2023-06-20', false, 0, 'dellxps15.jpg', 'image/jpeg', NULL);
+('Dell XPS 15', '15-inch high performance laptop', 'Dell', 1899.99, 'Laptop', '2023-06-20', false, 10, 'dellxps15.jpg', 'image/jpeg', NULL);
 
 INSERT INTO reviews (reviewer_name, comment, rating, product_id)
 VALUES

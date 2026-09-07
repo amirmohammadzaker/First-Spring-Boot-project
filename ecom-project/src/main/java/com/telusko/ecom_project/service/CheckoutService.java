@@ -33,7 +33,7 @@ public class CheckoutService {
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        if (product.getStockQuantity() < quantity) {
+        if (product.getStockQuantity() < quantity || !product.isProductAvailable()) {
             return "Stock not sufficient!";
         }
 
