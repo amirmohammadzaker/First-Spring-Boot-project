@@ -7,6 +7,8 @@ import com.telusko.ecom_project.validation.ValidReleaseDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,6 +26,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
 
@@ -79,4 +83,6 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags = new HashSet<>();
+
+    private boolean deleted = false;
 }
