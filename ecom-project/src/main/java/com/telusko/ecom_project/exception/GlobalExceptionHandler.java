@@ -59,4 +59,8 @@ public class GlobalExceptionHandler {
         }
         return new ResponseEntity<>(response, status);
     }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(UserNotFoundException ex) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "USER_NOT_FOUND");
+    }
 }
